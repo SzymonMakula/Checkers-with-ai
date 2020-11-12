@@ -93,3 +93,16 @@ class Piece:
         self.posy = fieldy
         self.posx = fieldx
 
+    def can_piece_attack(self, board):
+        available_attacks = []
+        for fieldx in range(len(board)):
+            column = []
+            for fieldy in range(len(board)):
+                legit_attack = board[self.posy][self.posx].is_valid_attack(board, fieldx, fieldy)
+                column.append(legit_attack)
+            available_attacks.append(column)
+
+        if any(True in sublist for sublist in available_attacks):
+            return True
+        else:
+            return False

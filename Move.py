@@ -1,6 +1,7 @@
 from Pawn import Pawn
 from King import King
 
+
 class Move:
     """Methods of this class are used solely by A.I. In contrary to movement methods of pieces, these
     methods take all the pawn's positions on board as arguments and can undo those movements."""
@@ -19,7 +20,6 @@ class Move:
                                                                              board[posy][posx]
         board[destination_y][destination_x].posy = destination_y
         board[destination_y][destination_x].posx = destination_x
-
 
     def undo_move(self, board, destination_y, destination_x, posy, posx):
         board[posy][posx], board[destination_y][destination_x] = board[destination_y][destination_x], \

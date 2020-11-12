@@ -41,27 +41,27 @@ class Computer:
         else:
             return king_value
 
-    def evaluate_board(self, board):
+    def evaluate_board(self, board, depth):
         score = 0
         for fieldx in range(len(board)):
             for fieldy in range(len(board)):
                 if board[fieldy][fieldx] is not None:
                     if board[fieldy][fieldx].get_colour() == self.colour:
-                        score = score + \
+                        score = depth + score + \
                             (self.evaluate_piece_prefer_promotion_edges(board, fieldy, fieldx) +
                                 self.evaluate_piece_prefer_vertical_borders(board, fieldy, fieldx))/2
                     else:
-                        score = score - \
+                        score = score - depth - \
                             (self.evaluate_piece_prefer_promotion_edges(board, fieldy, fieldx) +
                                 self.evaluate_piece_prefer_vertical_borders(board, fieldy, fieldx))/2
         return score
 
-    def alpha_beta(self, depth, is_maximizing, alpha, beta, board): #giga clusterfuck, king tends to roam around edge of the board doing nothing
+    def alpha_beta(self, depth, is_maximizing, alpha, beta, board):
         move = Move()
         best_move = 0
 
         if depth == 0 or best_move is None:
-            return self.evaluate_board(board), best_move
+            return self.evaluate_board(board, depth), best_move
 
         if is_maximizing:
             best_value = -math.inf
@@ -72,7 +72,7 @@ class Computer:
                 if move_is_attack:
                     move.attack(board, child[0], child[1], child[2], child[3], child[4])
 
-                    ply, has_to_attack_again = self.computer.get_ply(board)
+                    has_to_attack_again = board[child[0]][child[1]].can_piece_attack(board)
                     if has_to_attack_again:
                         value, ply = self.alpha_beta(depth - 1, True, alpha, beta, board)
                         if value >= best_value:
@@ -109,9 +109,9 @@ class Computer:
                 if move_is_attack is True:
                     move.attack(board, child[0], child[1], child[2], child[3], child[4])
 
-                    ply, has_to_attack_again = self.human.get_ply(board)
+                    has_to_attack_again = board[child[0]][child[1]].can_piece_attack(board)
                     if has_to_attack_again:
-                        value, ply = self.alpha_beta(depth -1, False, alpha, beta, board)
+                        value, ply = self.alpha_beta(depth - 1, False, alpha, beta, board)
                         if value < best_value:
                             best_value = value
                             best_move = child

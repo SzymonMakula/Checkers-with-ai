@@ -93,48 +93,6 @@ class Display:
                     self.draw_pawn(fieldy, fieldx, board[fieldy][fieldx].get_colour())
                     self.draw_king_overlay(fieldy, fieldx)
 
-    def draw_text_field(self, text, colour, bgcolour, left_top_Xcoord, left_top_Ycoord):
-        """Create Text object and get Rect object containing it, assign them to variables and return them.
-
-        :param text: String representing the text message
-        :param colour: Colour of text font
-        :param bgcolour: Colour of the background
-        :param left_top_Xcoord: Left-top pixel X-coordinate of text's Rect object
-        :param left_top_Ycoord: Left-top pixel Y-coordinate of text's Rect object
-        :return: text's Surface object and Rect object
-        """
-        text_surf = self.basic_font.render(text, True, colour, bgcolour)
-        text_rect = text_surf.get_rect()
-        text_rect.topleft = (left_top_Xcoord, left_top_Ycoord)
-        return text_surf, text_rect
-
-    def draw_colour_choose_buttons(self):
-        """Draw 3 Text Surface Objects and their respective Rect objects
-
-        This function
-
-        :return: Two seperate Rect objects with Text Surface objects inside them
-        """
-        self.displaysurf.fill(Colour.WHITE.value)
-
-        displaysurf_rect = self.displaysurf.get_rect()
-        centerx = displaysurf_rect.centerx
-        centery = displaysurf_rect.centery
-
-        option_window_text_surf, option_window_rect = self.draw_text_field('Choose colour', Colour.BLACK.value, Colour.WHITE.value, self.window_height * 0.75, self.window_width * 0.3)
-        option_window_rect.center = centerx, centery
-        self.displaysurf.blit(option_window_text_surf, option_window_rect)
-
-        mid, left = displaysurf_rect.midleft
-        option1_text_surf, option1_text_rect_surf = self.draw_text_field('White', Colour.BLACK.value, Colour.WHITE.value, mid + 120, left + 80)
-        self.displaysurf.blit(option1_text_surf, option1_text_rect_surf)
-
-        (mid, right) = displaysurf_rect.midright
-        option2_text_surf, option2_rect_surf = self.draw_text_field('Black', Colour.BLACK.value, Colour.WHITE.value, mid - 180, right + 80)
-        self.displaysurf.blit(option2_text_surf, option2_rect_surf)
-
-        return option1_text_rect_surf, option2_rect_surf
-
     def get_spot_clicked(self, board, mouse_posx, mouse_posy):
         """Convert pixel X&Y coordinates to board X&Y coordinates
 
@@ -169,7 +127,6 @@ class Display:
                 if available_moves[fieldy][fieldx] is True:
                     self.draw_highlight(fieldy, fieldx)
         pygame.display.update()
-
 
     def update_board(self, board):
         """Call to draw_empty_board and draw_pieces_on_board methods."""
@@ -238,6 +195,7 @@ class Display:
         sys.exit()
 
     def highlight_while_hovering(self, board, display, mouse_clicked, mousey, mousex):
+        """Call to draw_highlight on not-clicked boxes."""
         if mouse_clicked is False:
             boxy, boxx = display.get_spot_clicked(board, mousey, mousex)
             if boxy is not None and boxx is not None:

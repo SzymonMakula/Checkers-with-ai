@@ -65,6 +65,7 @@ class Player:
             player.turn = not player.turn
 
     def get_moves_of_piece(self, board, posy, posx):
+        """Return 4 or 5 item touple, depending on attack, with board coordinates as move positions. """
         piece_moves = []
         piece_attacks = []
         available_moves, attack = board[posy][posx].get_all_available_moves(board)
@@ -93,6 +94,7 @@ class Player:
             return piece_attacks, attack
 
     def get_ply(self, board):
+        """Call to get_moves_of_piece on every piece on board in player's possession."""
         ply_attacks = []
         ply_moves = []
         for fieldx in range(len(board)):
