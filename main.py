@@ -113,7 +113,7 @@ def main():
 
         else:  # Computer turn
             value, best_move = computer.alpha_beta(5, True, -math.inf, math.inf, board)
-            try:
+            if best_move[4] is not None:
                 move.attack(board, best_move[0], best_move[1], best_move[2], best_move[3], best_move[4])
                 main_display.draw_computer_highlight(best_move[0], best_move[1])
 
@@ -133,7 +133,7 @@ def main():
 
                     can_attack_again = piece.can_piece_attack(board)
 
-            except IndexError:  # non attack touple doesnt have any fifth item
+            else:  # non attack touple doesnt have any fifth item
                 move.move(board, best_move[0], best_move[1], best_move[2], best_move[3])
                 main_display.draw_computer_highlight(best_move[0], best_move[1])
                 piece = board[best_move[0]][best_move[1]]

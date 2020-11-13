@@ -83,7 +83,7 @@ class Player:
                         piece_attacks.append(attack_coordinates)
 
                 elif available_moves[movey][movex] is True and attack is False:
-                    move_coordinates = (movey, movex, posy, posx)
+                    move_coordinates = (movey, movex, posy, posx, None)
                     piece_moves.append(move_coordinates)
 
         if not piece_attacks:
